@@ -10,14 +10,11 @@ public class BuildInfoPlugin: CAPPlugin, CAPBridgedPlugin {
     public let identifier = "BuildInfoPlugin"
     public let jsName = "BuildInfo"
     public let pluginMethods: [CAPPluginMethod] = [
-        CAPPluginMethod(name: "echo", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "getBuildInfo", returnType: CAPPluginReturnPromise)
     ]
     private let implementation = BuildInfo()
 
-    @objc func echo(_ call: CAPPluginCall) {
-        let value = call.getString("value") ?? ""
-        call.resolve([
-            "value": implementation.echo(value)
-        ])
+    @objc func getBuildInfo(_ call: CAPPluginCall) {
+        call.resolve(implementation.getBuildInfo())
     }
 }
