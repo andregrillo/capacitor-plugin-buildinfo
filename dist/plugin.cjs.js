@@ -8,7 +8,10 @@ const BuildInfoNative = core.registerPlugin('BuildInfo', {
 class BuildInfo {
     static async init() {
         const res = await BuildInfoNative.getBuildInfo();
-        this.baseUrl = (res.baseUrl && res.baseUrl !== "") ? res.baseUrl : window.location.href;
+        this.baseUrl = window.location.href; // Default to current URL if not provided by native
+        if (res.baseUrl) {
+            this.baseUrl = res.baseUrl;
+        }
         this.packageName = res.packageName;
         this.basePackageName = res.basePackageName;
         this.displayName = res.displayName;
@@ -20,9 +23,11 @@ class BuildInfo {
         this.installDate = res.installDate;
         this.buildType = res.buildType;
         this.flavor = res.flavor;
-        // Return the response with name field for backward compatibility
-        return Object.assign(Object.assign({}, res), { baseUrl: this.baseUrl, name: res.name });
+        return Object.assign(Object.assign({}, res), { baseUrl: this.baseUrl });
     }
+    /**
+     * Directly call the native getBuildInfo method
+     */
     static async getBuildInfo() {
         return BuildInfoNative.getBuildInfo();
     }

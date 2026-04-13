@@ -5,9 +5,10 @@ import Foundation
         let bundle = Bundle.main
         let info = bundle.infoDictionary
         
-        var isDebug = false
         #if DEBUG
-        isDebug = true
+        let debug = true
+        #else
+        let debug = false
         #endif
         
         let df = ISO8601DateFormatter()
@@ -26,24 +27,20 @@ import Foundation
             installDate = df.string(from: creationDate)
         }
         
-        let displayName = info?["CFBundleDisplayName"] as? String
-        let bundleName = info?["CFBundleName"] as? String
-        let executableName = info?["CFBundleExecutable"] as? String
-        
-        let finalName = displayName ?? bundleName ?? executableName ?? ""
+        let bundleName = info?["CFBundleName"] as? String ?? ""
         
         return [
             "baseUrl": "",
             "packageName": bundle.bundleIdentifier ?? "",
             "basePackageName": bundle.bundleIdentifier ?? "",
-            "displayName": finalName,
-            "name": finalName,
+            "displayName": info?["CFBundleDisplayName"] as? String ?? bundleName,
+            "name": bundleName,
             "version": info?["CFBundleShortVersionString"] as? String ?? "",
             "versionCode": info?["CFBundleVersion"] as? String ?? "",
-            "debug": isDebug,
+            "debug": debug,
             "buildDate": buildDate,
             "installDate": installDate,
-            "buildType": isDebug ? "debug" : "release",
+            "buildType": "",
             "flavor": ""
         ]
     }

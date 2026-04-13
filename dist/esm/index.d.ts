@@ -13,6 +13,9 @@ export declare class BuildInfo {
     static buildType: string;
     static flavor: string;
     static init(): Promise<BuildInfoResponse>;
+    /**
+     * Directly call the native getBuildInfo method
+     */
     static getBuildInfo(): Promise<BuildInfoResponse>;
 }
 export * from './definitions';
