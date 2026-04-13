@@ -21,10 +21,7 @@ export class BuildInfo {
 
   public static async init(): Promise<BuildInfoResponse> {
     const res = await BuildInfoNative.getBuildInfo();
-    this.baseUrl = window.location.href; // Default to current URL if not provided by native
-    if (res.baseUrl) {
-      this.baseUrl = res.baseUrl;
-    }
+    this.baseUrl = (res.baseUrl && res.baseUrl !== "") ? res.baseUrl : window.location.href;
     this.packageName = res.packageName;
     this.basePackageName = res.basePackageName;
     this.displayName = res.displayName;
@@ -36,12 +33,15 @@ export class BuildInfo {
     this.installDate = res.installDate;
     this.buildType = res.buildType;
     this.flavor = res.flavor;
-    return { ...res, baseUrl: this.baseUrl };
+    
+    // Return the response with name field for backward compatibility
+    return { 
+        ...res, 
+        baseUrl: this.baseUrl,
+        name: res.name 
+    };
   }
 
-  /**
-   * Directly call the native getBuildInfo method
-   */
   public static async getBuildInfo(): Promise<BuildInfoResponse> {
     return BuildInfoNative.getBuildInfo();
   }

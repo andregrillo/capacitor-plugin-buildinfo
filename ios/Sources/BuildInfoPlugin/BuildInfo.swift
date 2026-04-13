@@ -5,19 +5,10 @@ import Foundation
         let bundle = Bundle.main
         let info = bundle.infoDictionary
         
-        // Improved Debug Detection for iOS
         var isDebug = false
         #if DEBUG
         isDebug = true
         #endif
-        
-        // Fallback check for debug: check if a debugger can be attached
-        if !isDebug {
-            var address = [CChar](repeating: 0, count: Int(MAXPATHLEN))
-            if getenv("DYLD_INSERT_LIBRARIES") != nil || isatty(STDERR_FILENO) != 0 {
-                isDebug = true
-            }
-        }
         
         let df = ISO8601DateFormatter()
         
@@ -35,7 +26,6 @@ import Foundation
             installDate = df.string(from: creationDate)
         }
         
-        // Improved Name Detection
         let displayName = info?["CFBundleDisplayName"] as? String
         let bundleName = info?["CFBundleName"] as? String
         let executableName = info?["CFBundleExecutable"] as? String
@@ -54,7 +44,7 @@ import Foundation
             "buildDate": buildDate,
             "installDate": installDate,
             "buildType": isDebug ? "debug" : "release",
-            "flavor": "" // iOS doesn't have a native flavor concept at runtime
+            "flavor": ""
         ]
     }
 }
