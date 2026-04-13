@@ -1,0 +1,121 @@
+{
+  "api": {
+    "name": "BuildInfoPlugin",
+    "slug": "buildinfoplugin",
+    "docs": "",
+    "tags": [],
+    "methods": [
+      {
+        "name": "getBuildInfo",
+        "signature": "() => Promise<BuildInfoResponse>",
+        "parameters": [],
+        "returns": "Promise<BuildInfoResponse>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [
+          "BuildInfoResponse"
+        ],
+        "slug": "getbuildinfo"
+      }
+    ],
+    "properties": []
+  },
+  "interfaces": [
+    {
+      "name": "BuildInfoResponse",
+      "slug": "buildinforesponse",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "baseUrl",
+          "tags": [],
+          "docs": "Base URL of the app",
+          "complexTypes": [],
+          "type": "string | null"
+        },
+        {
+          "name": "packageName",
+          "tags": [],
+          "docs": "Package Name (Bundle ID)",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "basePackageName",
+          "tags": [],
+          "docs": "Base Package Name",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "displayName",
+          "tags": [],
+          "docs": "Display Name",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "name",
+          "tags": [],
+          "docs": "App Name",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "version",
+          "tags": [],
+          "docs": "Version String",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "versionCode",
+          "tags": [],
+          "docs": "Version Code (Build Number)",
+          "complexTypes": [],
+          "type": "string | number"
+        },
+        {
+          "name": "debug",
+          "tags": [],
+          "docs": "Debug flag",
+          "complexTypes": [],
+          "type": "boolean"
+        },
+        {
+          "name": "buildDate",
+          "tags": [],
+          "docs": "Build Date",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "installDate",
+          "tags": [],
+          "docs": "Install Date",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "buildType",
+          "tags": [],
+          "docs": "Build Type",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "flavor",
+          "tags": [],
+          "docs": "Flavor",
+          "complexTypes": [],
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "enums": [],
+  "typeAliases": [],
+  "pluginConfigs": []
+}
