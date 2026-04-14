@@ -1,8 +1,9 @@
 import { registerPlugin } from '@capacitor/core';
 import type { BuildInfoPlugin, BuildInfoResponse } from './definitions';
+import { BuildInfoWeb } from './web';
 
 const BuildInfoNative = registerPlugin<BuildInfoPlugin>('BuildInfo', {
-  web: () => import('./web').then((m) => new m.BuildInfoWeb()),
+  web: () => new BuildInfoWeb(),
 });
 
 export class BuildInfo {

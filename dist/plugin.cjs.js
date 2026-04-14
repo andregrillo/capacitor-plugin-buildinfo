@@ -2,8 +2,27 @@
 
 var core = require('@capacitor/core');
 
+class BuildInfoWeb extends core.WebPlugin {
+    async getBuildInfo() {
+        return {
+            baseUrl: window.location.href,
+            packageName: 'web',
+            basePackageName: 'web',
+            displayName: 'Web',
+            name: 'Web',
+            version: '1.0.0',
+            versionCode: 1,
+            debug: true,
+            buildDate: new Date().toISOString(),
+            installDate: new Date().toISOString(),
+            buildType: 'web',
+            flavor: 'web'
+        };
+    }
+}
+
 const BuildInfoNative = core.registerPlugin('BuildInfo', {
-    web: () => Promise.resolve().then(function () { return web; }).then((m) => new m.BuildInfoWeb()),
+    web: () => new BuildInfoWeb(),
 });
 class BuildInfo {
     static async init() {
@@ -44,30 +63,6 @@ BuildInfo.buildDate = '';
 BuildInfo.installDate = '';
 BuildInfo.buildType = '';
 BuildInfo.flavor = '';
-
-class BuildInfoWeb extends core.WebPlugin {
-    async getBuildInfo() {
-        return {
-            baseUrl: window.location.href,
-            packageName: 'web',
-            basePackageName: 'web',
-            displayName: 'Web',
-            name: 'Web',
-            version: '1.0.0',
-            versionCode: 1,
-            debug: true,
-            buildDate: new Date().toISOString(),
-            installDate: new Date().toISOString(),
-            buildType: 'web',
-            flavor: 'web'
-        };
-    }
-}
-
-var web = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    BuildInfoWeb: BuildInfoWeb
-});
 
 exports.BuildInfo = BuildInfo;
 //# sourceMappingURL=plugin.cjs.js.map
