@@ -28,30 +28,53 @@ public class BuildInfoPlugin extends Plugin {
         ret.put("displayName", displayName);
         ret.put("name", displayName);
 
+        // VERSION_NAME - prefer BuildConfig, fallback to PackageInfo
         Object version = implementation.getBuildConfigValue(context, "VERSION_NAME");
         ret.put("version", version != null ? version.toString() : (pi != null ? pi.versionName : ""));
 
+        // VERSION_CODE - prefer BuildConfig, fallback to PackageInfo
         Object versionCode = implementation.getBuildConfigValue(context, "VERSION_CODE");
-        ret.put("versionCode", versionCode != null ? versionCode : (pi != null ? pi.versionCode : 0));
+        if (versionCode != null) {
+            ret.put("versionCode", versionCode);
+        } else if (pi != null) {
+            ret.put("versionCode", String.valueOf(pi.versionCode));
+        } else {
+            ret.put("versionCode", "0");
+        }
 
+        // DEBUG - try BuildConfig, but also check via ApplicationInfo flags as fallback
         Object debug = implementation.getBuildConfigValue(context, "DEBUG");
-        ret.put("debug", debug != null ? (Boolean) debug : false);
+        if (debug == null) {
+            // Fallback: check if app is debuggable via ApplicationInfo
+            try {
+                android.content.pm.ApplicationInfo ai = context.getPackageManager().getApplicationInfo(packageName, 0);
+                debug = (ai.flags & android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+            } catch (Exception e) {
+                debug = false;
+            }
+        }
+        ret.put("debug", debug);
 
+        // BUILD_TYPE - prefer BuildConfig, fallback to empty
         Object buildType = implementation.getBuildConfigValue(context, "BUILD_TYPE");
         ret.put("buildType", buildType != null ? buildType.toString() : "");
 
+        // FLAVOR - prefer BuildConfig, fallback to empty
         Object flavor = implementation.getBuildConfigValue(context, "FLAVOR");
         ret.put("flavor", flavor != null ? flavor.toString() : "");
 
-        // Build Date (if available in BuildConfig via custom Gradle task, otherwise empty)
+        // Build Date - try BuildConfig _BUILDINFO_TIMESTAMP, fallback to packageInfo lastUpdateTime or current time
         Object buildDate = implementation.getBuildConfigValue(context, "_BUILDINFO_TIMESTAMP");
         if (buildDate != null) {
             ret.put("buildDate", implementation.formatDate((Long) buildDate));
+        } else if (pi != null && pi.lastUpdateTime > 0) {
+            ret.put("buildDate", implementation.formatDate(pi.lastUpdateTime));
         } else {
-            ret.put("buildDate", "");
+            ret.put("buildDate", implementation.formatDate(System.currentTimeMillis()));
         }
 
-        if (pi != null) {
+        // Install Date - use firstInstallTime from PackageInfo
+        if (pi != null && pi.firstInstallTime > 0) {
             ret.put("installDate", implementation.formatDate(pi.firstInstallTime));
         } else {
             ret.put("installDate", "");
